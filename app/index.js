@@ -39,24 +39,35 @@ export default function index() {
 
   const AddUser = async () => {
     if(imie && nazwisko && nazwa){
-      db.transaction(tx => {
-        tx.executeSql('INSERT INTO Accounts (imie, nazwisko, nazwa) VALUES (?, ?, ?)', [imie, nazwisko, nazwa],
-        (txObj, error) => {
-          const data = {
-            imie: imie,
-            nazwisko: nazwisko,
-            nazwa: nazwa
-          }
-          axios.post("http://192.168.56.1/API/index.php?action=add_user", data).then((response) => {checkUser()}).catch((error) => {console.log("Not added to DB - ",error)})
-    
-        })
+      const data = {
+        imie: imie,
+        nazwisko: nazwisko,
+        nazwa: nazwa
+      }
+      axios.post("http://192.168.0.150/API/index.php?action=add_user", data).then((response) => {
+        db.transaction(tx => {
+          tx.executeSql('INSERT INTO Accounts (imie, nazwisko, nazwa) VALUES (?, ?, ?)', [imie, nazwisko, nazwa],
+          (txObj, error) => {
+            checkUser();
+        })})
+
+      }).catch((error) => {
+        console.log(error);
+        Alert.alert('Błąd Serwera', 'Nie udało się dodać użytkownika na serwer.')
+        setIsLoading(false);
       })
 
-      
-      setIsLoading(false);
     }else{
       Alert.alert('Brak danych', 'Aby się zalogować musisz podać wszystkie dane.')
+      setIsLoading(false);
     }
+  }
+
+  const handleClick = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      AddUser();
+    }, 500)
   }
 
 
@@ -89,7 +100,7 @@ export default function index() {
 
             <Pressable
               style={{ backgroundColor: "#62609750", width: '90%', marginTop: 20, height: 40, justifyContent:'center', alignItems:'center', borderRadius:10}}
-              onPress={AddUser}>
+              onPress={handleClick}>
               <Text style={{ fontSize: 18, fontWeight: 500, color: '#282846'}}>Utwórz konto</Text>
             </Pressable>
         </View>
