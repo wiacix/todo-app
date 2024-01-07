@@ -18,7 +18,7 @@ export default function index() {
   
   const checkUser = () => {
     db.transaction(tx => {
-      tx.executeSql("SELECT * FROM Accounts LIMIT 1", null, 
+      tx.executeSql("SELECT * FROM Account LIMIT 1", null, 
       (txObj, resultSet) => setUser(resultSet.rows._array),
       (txObj, error) => console.log('ERROR - ', error)
       );
@@ -26,10 +26,10 @@ export default function index() {
 
   useEffect(() => {
     db.transaction(tx => {
-      tx.executeSql("DROP TABLE Accounts")
+      tx.executeSql("DROP TABLE Account")
     })
     db.transaction(tx => {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS Accounts (id INTEGER PRIMARY KEY AUTOINCREMENT, imie TEXT, nazwisko TEXT, nazwa TEXT)')
+      tx.executeSql('CREATE TABLE IF NOT EXISTS Account (id INTEGER PRIMARY KEY AUTOINCREMENT, imie TEXT, nazwisko TEXT, nazwa TEXT)')
     });
 
     checkUser();
@@ -46,7 +46,7 @@ export default function index() {
       }
       axios.post("http://192.168.0.150/API/index.php?action=add_user", data).then((response) => {
         db.transaction(tx => {
-          tx.executeSql('INSERT INTO Accounts (imie, nazwisko, nazwa) VALUES (?, ?, ?)', [imie, nazwisko, nazwa],
+          tx.executeSql('INSERT INTO Account (imie, nazwisko, nazwa) VALUES (?, ?, ?)', [imie, nazwisko, nazwa],
           (txObj, error) => {
             checkUser();
         })})
