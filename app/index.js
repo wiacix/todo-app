@@ -1,4 +1,4 @@
-import { Alert, Pressable, StatusBar, Text, TextInput, View, useWindowDimensions} from 'react-native'
+import { Pressable, StatusBar, Text, TextInput, View, useWindowDimensions, ToastAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'expo-router'
 import * as SQLite from 'expo-sqlite'
@@ -44,7 +44,8 @@ export default function index() {
         nazwisko: nazwisko,
         nazwa: nazwa
       }
-      axios.post("http://192.168.0.150/API/index.php?action=add_user", data).then((response) => {
+      axios.post("http://192.168.0.116/API/index.php?action=add_user", data).then((response) => {
+        ToastAndroid.show(response.data, ToastAndroid.SHORT);
         db.transaction(tx => {
           tx.executeSql('INSERT INTO Account (imie, nazwisko, nazwa) VALUES (?, ?, ?)', [imie, nazwisko, nazwa],
           (txObj, error) => {
@@ -53,12 +54,12 @@ export default function index() {
 
       }).catch((error) => {
         console.log(error);
-        Alert.alert('Błąd Serwera', 'Nie udało się dodać użytkownika na serwer.')
+        ToastAndroid.show('Nie udało się dodać użytkownika na serwer.', ToastAndroid.LONG);
         setIsLoading(false);
       })
 
     }else{
-      Alert.alert('Brak danych', 'Aby się zalogować musisz podać wszystkie dane.')
+      ToastAndroid.show('Aby się zalogować musisz podać wszystkie dane.', ToastAndroid.LONG);
       setIsLoading(false);
     }
   }
