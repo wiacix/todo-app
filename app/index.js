@@ -29,7 +29,7 @@ export default function index() {
       tx.executeSql("DROP TABLE Account")
     })
     db.transaction(tx => {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS Account (id INTEGER PRIMARY KEY AUTOINCREMENT, imie TEXT, nazwisko TEXT, nazwa TEXT)')
+      tx.executeSql('CREATE TABLE IF NOT EXISTS Account (id INTEGER, imie TEXT, nazwisko TEXT, nazwa TEXT)')
     });
 
     checkUser();
@@ -45,10 +45,11 @@ export default function index() {
         nazwa: nazwa
       }
       axios.post("http://192.168.0.116/API/index.php?action=add_user", data).then((response) => {
-        ToastAndroid.show(response.data, ToastAndroid.SHORT);
+        const id = response.data[0].ID;
         db.transaction(tx => {
-          tx.executeSql('INSERT INTO Account (imie, nazwisko, nazwa) VALUES (?, ?, ?)', [imie, nazwisko, nazwa],
+          tx.executeSql('INSERT INTO Account (id, imie, nazwisko, nazwa) VALUES (?, ?, ?, ?)', [id, imie, nazwisko, nazwa],
           (txObj, error) => {
+            ToastAndroid.show('Konto utworzono pomyślnie!', ToastAndroid.SHORT);
             checkUser();
         })})
 

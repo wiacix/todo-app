@@ -20,7 +20,7 @@ const index = () => {
     })
     }, [])
     return (
-        <ScrollView style={{ flex: 1}}>
+        <View style={{ flex: 1}}>
         <LinearGradient colors={["#a89eea", "#f1d5ed"]} style={{ flex: 1, height: WindowHeight }}>
             <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center', gap:5, marginTop:7}}>
                 <Entypo name="check" size={45} color="#120907" />
@@ -39,7 +39,7 @@ const index = () => {
                 <AntDesign name="plus" size={44} color="white" />
             </Pressable>
         </LinearGradient>
-        </ScrollView>
+        </View>
     )
 }
 

@@ -28,7 +28,7 @@ const Loading = (props) => {
 
 
     return (
-      <View style={{ justifyContent:'center', alignItems:'center', position: 'absolute', width:'100%', height:'100%', backgroundColor: '#00000070'}}>
+      <View style={{ justifyContent:'center', alignItems:'center', position: 'absolute', width:'100%', height:'100%', backgroundColor: '#00000070', zIndex:9999}}>
           <Animated.View style={{ justifyContent:'center', alignItems:'center', gap:10, transform: [{ rotate: spin }]}}>
               <FontAwesome5 name="hourglass" size={86} color="#120907" />
           </Animated.View>

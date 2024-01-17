@@ -6,6 +6,8 @@ export default function Layout() {
       <Stack.Screen name="index" />
       <Stack.Screen name="addTask" />
       <Stack.Screen name="Loading" />
+      <Stack.Screen name="DateTimePicker" />
+      <Stack.Screen name="Picker" />
     </Stack>
   );
 }
